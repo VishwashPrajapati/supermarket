@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  // width: 100%;
+}
+::ng-deep .formfield .mat-form-field {
+  width: 25%;
+}
+::ng-deep .formfield .mat-form-field-wrapper {
+  padding-bottom: 0px;
+}
+
+::ng-deep .formfield .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.2em 0 0.4em 0;
+}
+
+td,
+th {
+  width: 25%;
+}

@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.container {
+  padding: 25px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 959px) {
+    flex-direction: column;
+  }
+}
+
+.flex {
+  display: flex;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.justify-content-around {
+  justify-content: space-around;
+}
+.align-center {
+  align-items: center;
+}
+.flex-direction-column{
+  flex-direction: column;
+}
+.flex-direction-row{
+  flex-direction: row;
+}

@@ -1,0 +1,144 @@
+<div class="container">
+  <div class="row">
+    <mat-card class="card">
+      <div class="flex justify-content-between align-center">
+        <div>Add Items</div>
+        <button mat-button color="primary" (click)="openDialog()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-card-content>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="allItems">
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name.</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Category.</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.category.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef style="text-align: right">
+                Action
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: right">
+                <button
+                  mat-button
+                  color="warn"
+                  (click)="deleteData(element._id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-button color="primary">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsOne"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsOne"></tr>
+          </table>
+
+          <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                         showFirstLastButtons
+                         aria-label="Select page of periodic elements">
+          </mat-paginator> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="card">
+      <div class="flex justify-content-between align-center">
+        <div>Add Market</div>
+        <button mat-button color="primary">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-card-content>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="allMarket">
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name.</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef style="text-align: right">
+                Action
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: right">
+                <button mat-button color="warn">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-button color="primary">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsTwo"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsTwo"></tr>
+          </table>
+
+          <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                         showFirstLastButtons
+                         aria-label="Select page of periodic elements">
+          </mat-paginator> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #dialogRef>
+  <h2 class="dialogTitle">Add Item</h2>
+  <form
+    class="example-form"
+    [formGroup]="itemForm"
+    (ngSubmit)="onSubmit(itemForm)"
+  >
+    <p>
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Item Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="!itemForm.valid && itemForm.value.name === ''">
+          Please enter a Valid Item Name
+        </mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field formControlName="catID" appearance="outline">
+        <mat-label>Choose </mat-label>
+        <mat-select>
+          <mat-option *ngFor="let data of allCategory" [value]="data._id">{{
+            data.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-checkbox formControlName="active" class="example-margin"
+        >Active</mat-checkbox
+      >
+    </p>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close color="warn" type="reset">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        [disabled]="!itemForm.valid"
+        mat-button
+        mat-dialog-close
+        color="primary"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</ng-template>

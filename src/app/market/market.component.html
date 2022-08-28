@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row">
+    <div class="mainGrid">
+      <div
+        class="marketName"
+        *ngFor="let data of allMarket"
+        [routerLink]="data._id"
+      >
+        {{ data.name }}
+      </div>
+    </div>
+  </div>
+</div>

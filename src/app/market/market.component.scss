@@ -1,0 +1,37 @@
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.mainGrid {
+  width: 100%;
+  height: calc(100vh - 20vh);
+  display: grid;
+  grid-template-columns: repeat(4, calc(100% / 4));
+  grid-template-rows: repeat(4, calc(100% / 4));
+  place-items: center;
+
+  @media (max-width: 789px) {
+    grid-template-columns: repeat(3, calc(100% / 3));
+  }
+  @media (max-width: 489px) {
+    grid-template-columns: repeat(2, calc(100% / 2));
+  }
+
+  .marketName {
+    width: calc(100% - 2rem);
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0f172a;
+    border-radius: 2rem;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #1c2b4d;
+    }
+  }
+}

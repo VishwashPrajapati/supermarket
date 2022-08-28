@@ -1,0 +1,26 @@
+.card {
+  width: calc(100% / 2 - 50px);
+  @media (max-width: 959px) {
+    width: calc(100% - 30px);
+    margin-bottom: 20px;
+  }
+  ::ng-deep .mat-elevation-z8 {
+    box-shadow: none;
+  }
+  table {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+.dialogTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+::ng-deep .mat-form-field {
+  width: 30vw;
+}
+::ng-deep .mat-dialog-actions {
+  justify-content: flex-end;
+}
