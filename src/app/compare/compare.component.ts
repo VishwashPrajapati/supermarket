@@ -21,7 +21,7 @@ export class CompareComponent implements OnInit {
   marketName: string = '';
   marketId: string = '';
   priceValue: number = 0;
-  displayedColumns: string[] = ['srno', 'name', 'compare'];
+  displayedColumns: string[] = ['srno', 'name'];
   dataSource!: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -40,6 +40,7 @@ export class CompareComponent implements OnInit {
       .pipe(map((e: any) => e.Data))
       .subscribe((res: any) => {
         res.forEach((ele: any) => {
+          this.displayedColumns.push(ele.name)
           ele.items.forEach((e: any, index: any) => {
             const ids = this.newData.findIndex(
               (newname: any) => newname.name === e.name
@@ -80,7 +81,7 @@ export class CompareComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
