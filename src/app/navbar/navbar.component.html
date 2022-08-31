@@ -7,18 +7,23 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Smarket</mat-toolbar>
+    <mat-toolbar>Market Compare</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Items</a>
-      <a mat-list-item href="#">Markets</a>
-      <a mat-list-item href="#">Category</a>
+      <a
+        (click)="drawer.close()"
+        *ngFor="let x of menu"
+        mat-list-item
+        [routerLink]="x.link"
+        routerLinkActive="active"
+        >{{ x.name }}</a
+      >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar>
       <div class="flex">
         <div>
-          <span class="desktopTitle" routerLink="home">Market Compare</span>
+          <span routerLink="home">Market Compare</span>
         </div>
         <div>
           <button
@@ -31,10 +36,16 @@
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
           <div class="menuItems">
-            <button mat-button routerLink="items">Items</button>
-            <button mat-button routerLink="market">Markets</button>
+            <button
+              *ngFor="let x of menu"
+              mat-button
+              routerLinkActive="active"
+              [routerLink]="x.link"
+              (click)="drawer.close()"
+            >
+              {{ x.name }}
+            </button>
             <!-- <button mat-button routerLink="category">Category</button> -->
-            <button mat-button routerLink="compare">Compare</button>
           </div>
         </div>
       </div>

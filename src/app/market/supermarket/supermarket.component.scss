@@ -7,17 +7,25 @@ table {
   // width: 100%;
 }
 ::ng-deep .formfield .mat-form-field {
-  width: 25%;
+  width: 75%;
 }
 ::ng-deep .formfield .mat-form-field-wrapper {
   padding-bottom: 0px;
 }
-
 ::ng-deep .formfield .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 0.2em 0 0.4em 0;
 }
 
+.mat-cell:first-of-type,
+mat-header-cell:first-of-type,
+mat-footer-cell:first-of-type {
+  flex: 0.5;
+}
+
 td,
 th {
-  width: 25%;
+  width: min-content;
+}
+.tableDiv {
+  overflow: hidden;
 }

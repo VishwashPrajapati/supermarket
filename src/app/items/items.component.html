@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container itemPage">
   <div class="row">
     <mat-card class="card">
       <div class="flex justify-content-between align-center">
@@ -8,25 +8,39 @@
         </button>
       </div>
       <mat-card-content>
-        <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="allItems">
+        <div class="tableDiv">
+          <mat-table mat-table [dataSource]="allItems">
             <!-- Position Column -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Name.</th>
-              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              <mat-header-cell mat-header-cell *matHeaderCellDef
+                >Name.</mat-header-cell
+              >
+              <mat-cell mat-cell *matCellDef="let element">{{
+                element.name
+              }}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="category">
-              <th mat-header-cell *matHeaderCellDef>Category.</th>
-              <td mat-cell *matCellDef="let element">
+              <mat-header-cell mat-header-cell *matHeaderCellDef
+                >Category.</mat-header-cell
+              >
+              <mat-cell mat-cell *matCellDef="let element">
                 {{ element.category.name }}
-              </td>
+              </mat-cell>
             </ng-container>
             <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef style="text-align: right">
+              <mat-header-cell
+                mat-header-cell
+                *matHeaderCellDef
+                style="text-align: right"
+              >
                 Action
-              </th>
-              <td mat-cell *matCellDef="let element" style="text-align: right">
+              </mat-header-cell>
+              <mat-cell
+                mat-cell
+                *matCellDef="let element"
+                style="text-align: right"
+              >
                 <button
                   mat-button
                   color="warn"
@@ -34,15 +48,21 @@
                 >
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-button color="primary">
+                <button mat-button color="primary" (click)="editData(element)">
                   <mat-icon>edit</mat-icon>
                 </button>
-              </td>
+              </mat-cell>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumnsOne"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsOne"></tr>
-          </table>
+            <mat-header-row
+              mat-header-row
+              *matHeaderRowDef="displayedColumnsOne"
+            ></mat-header-row>
+            <mat-row
+              mat-row
+              *matRowDef="let row; columns: displayedColumnsOne"
+            ></mat-row>
+          </mat-table>
 
           <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                          showFirstLastButtons
@@ -59,31 +79,49 @@
         </button>
       </div>
       <mat-card-content>
-        <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="allMarket">
+        <div class="tableDiv">
+          <mat-table mat-table [dataSource]="allMarket">
             <!-- Position Column -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Name.</th>
-              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              <mat-header-cell mat-header-cell *matHeaderCellDef
+                >Name.</mat-header-cell
+              >
+              <mat-cell mat-cell *matCellDef="let element">{{
+                element.name
+              }}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef style="text-align: right">
+              <mat-header-cell
+                mat-header-cell
+                *matHeaderCellDef
+                style="text-align: right"
+              >
                 Action
-              </th>
-              <td mat-cell *matCellDef="let element" style="text-align: right">
+              </mat-header-cell>
+              <mat-cell
+                mat-cell
+                *matCellDef="let element"
+                style="text-align: right"
+              >
                 <button mat-button color="warn">
                   <mat-icon>delete</mat-icon>
                 </button>
                 <button mat-button color="primary">
                   <mat-icon>edit</mat-icon>
                 </button>
-              </td>
+              </mat-cell>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumnsTwo"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsTwo"></tr>
-          </table>
+            <mat-header-row
+              mat-header-row
+              *matHeaderRowDef="displayedColumnsTwo"
+            ></mat-header-row>
+            <mat-row
+              mat-row
+              *matRowDef="let row; columns: displayedColumnsTwo"
+            ></mat-row>
+          </mat-table>
 
           <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                          showFirstLastButtons
@@ -95,7 +133,7 @@
   </div>
 </div>
 
-<ng-template #dialogRef>
+<ng-template #dialogRef let-new>
   <h2 class="dialogTitle">Add Item</h2>
   <form
     class="example-form"
@@ -131,6 +169,7 @@
         Cancel
       </button>
       <button
+        *ngIf="!editMode"
         type="submit"
         [disabled]="!itemForm.valid"
         mat-button
@@ -138,6 +177,16 @@
         color="primary"
       >
         Save
+      </button>
+      <button
+        *ngIf="editMode"
+        [disabled]="!itemForm.valid"
+        mat-button
+        mat-dialog-close
+        color="primary"
+        (click)="updateData(itemForm.value, new)"
+      >
+        Update
       </button>
     </div>
   </form>

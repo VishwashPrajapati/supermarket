@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/data.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,7 +8,7 @@ import { map, tap } from 'rxjs';
 export interface UserData {
   name: string;
   price: string;
-  category: string;
+  compare: string;
 }
 
 @Component({
@@ -30,17 +29,14 @@ export class CompareComponent implements OnInit {
 
   newData: any = [];
   compare: any = [];
-  constructor(
-    private dataservice: DataService,
-    private activeRoute: ActivatedRoute
-  ) {
+  constructor(private dataservice: DataService) {
     this.dataservice.setLoader(true);
     this.dataservice
       .getAllMarket()
       .pipe(map((e: any) => e.Data))
       .subscribe((res: any) => {
         res.forEach((ele: any) => {
-          this.displayedColumns.push(ele.name)
+          this.displayedColumns.push(ele.name);
           ele.items.forEach((e: any, index: any) => {
             const ids = this.newData.findIndex(
               (newname: any) => newname.name === e.name
@@ -58,30 +54,29 @@ export class CompareComponent implements OnInit {
             }
           });
         });
-        console.log(this.newData);
-
         this.dataSource = new MatTableDataSource(this.newData);
 
-        // this.dataSource.filterPredicate = (data: any, filter: string) => {
-        //   const accumulator = () => {
-        //     return data.category.name + data.name + data.price;
-        //   };
-        //   const dataStr = Object.keys(data)
-        //     .reduce(accumulator, '')
-        //     .toLowerCase();
+        this.dataSource.filterPredicate = (data: any, filter: string) => {
+          const accumulator = (e: any) => {
+            return data.name;
+          };
+          const dataStr = Object.keys(data)
+            .reduce(accumulator, '')
+            .toLowerCase();
 
-        //   // Transform the filter by converting it to lowercase and removing whitespace.
-        //   const transformedFilter = filter.trim().toLowerCase();
-        //   return dataStr.indexOf(transformedFilter) !== -1;
-        // };
-
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.dataservice.setLoader(false);
+          // Transform the filter by converting it to lowercase and removing whitespace.
+          const transformedFilter = filter.trim().toLowerCase();
+          return dataStr.indexOf(transformedFilter) !== -1;
+        };
+        setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          this.dataservice.setLoader(false);
+        }, 100);
       });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

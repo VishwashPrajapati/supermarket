@@ -21,6 +21,8 @@ export class ItemsComponent implements OnInit {
   allMarket = new MatTableDataSource<Supermarket>();
   displayedColumnsTwo: string[] = ['name', 'action'];
 
+  editMode: boolean = false;
+
   allCategory: any = [];
 
   @ViewChild('dialogRef') dialogRef!: TemplateRef<any>;
@@ -76,7 +78,35 @@ export class ItemsComponent implements OnInit {
     });
   }
   openDialog() {
+    this.itemForm.reset();
+    this.editMode = false;
     this.dialog.open(this.dialogRef, {});
+  }
+
+  editData(data: any) {
+    let newData = {
+      name: data.name,
+      catID: data.category._id,
+      active: data.active,
+    };
+    this.itemForm.patchValue(newData);
+    this.editMode = true;
+    this.dialog.open(this.dialogRef, { data: data._id });
+  }
+
+  updateData(itemForm: any, id: string) {
+    let body = {
+      name: itemForm.name,
+      category: itemForm.catID,
+      active: itemForm.active,
+    };
+    this.dataservice.setLoader(true);
+    this.dataservice
+      .updateItemData(id, body)
+      .pipe(tap(() => this.dataservice.liveReload.next()))
+      .subscribe(() => {
+        this.dataservice.setLoader(false);
+      });
   }
 
   deleteData(id: string) {

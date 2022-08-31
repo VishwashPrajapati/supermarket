@@ -46,6 +46,10 @@ export class DataService {
     return this.http.patch(`${this.baseURL}/items/${id}`, body);
   }
 
+  updateItemData(id: string, body: any) {
+    return this.http.patch(`${this.baseURL}/items/data/${id}`, body);
+  }
+
   // Supermarket Service
   getAllMarket() {
     return this.http.get(`${this.baseURL}/supermarket`);

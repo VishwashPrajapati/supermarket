@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [MarketComponent, SupermarketComponent],
@@ -21,6 +22,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatInputModule,
     MatSortModule,
+    FormsModule,
   ],
 })
 export class MarketModule {}

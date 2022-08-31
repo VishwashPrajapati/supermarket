@@ -26,7 +26,6 @@ export class SupermarketComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild('price') price!: ElementRef;
 
   constructor(
     private dataservice: DataService,
@@ -70,12 +69,12 @@ export class SupermarketComponent implements OnInit {
     }
   }
 
-  updateItem(itemid: string) {
+  updateItem(itemid: string, event: any) {
     this.dataservice.setLoader(true);
     this.dataservice
       .updateItem(itemid, {
         s_id: this.marketId,
-        price: this.price.nativeElement.value,
+        price: event.target.value,
       })
       .pipe(tap(() => this.dataservice.liveReload.next()))
       .subscribe((res) => {

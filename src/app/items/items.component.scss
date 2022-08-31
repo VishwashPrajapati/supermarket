@@ -4,9 +4,7 @@
     width: calc(100% - 30px);
     margin-bottom: 20px;
   }
-  ::ng-deep .mat-elevation-z8 {
-    box-shadow: none;
-  }
+
   table {
     margin-top: 20px;
     width: 100%;
@@ -17,10 +15,12 @@
   text-align: center;
   margin-bottom: 2rem;
 }
-
-::ng-deep .mat-form-field {
+.itemPage ::ng-deep .tableDiv {
+  box-shadow: none;
+}
+.itemPage ::ng-deep .mat-form-field {
   width: 30vw;
 }
-::ng-deep .mat-dialog-actions {
+.itemPage ::ng-deep .mat-dialog-actions {
   justify-content: flex-end;
 }
