@@ -7,7 +7,13 @@ table {
   // width: 100%;
 }
 ::ng-deep .formfield .mat-form-field {
-  width: 75%;
+  width: 25%;
+}
+
+@media (max-width: 500px) {
+  ::ng-deep .formfield .mat-form-field {
+    width: 75%;
+  }
 }
 ::ng-deep .formfield .mat-form-field-wrapper {
   padding-bottom: 0px;

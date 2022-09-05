@@ -26,8 +26,9 @@ export class ItemsComponent implements OnInit {
   allCategory: any = [];
 
   @ViewChild('dialogRef') dialogRef!: TemplateRef<any>;
-
+  @ViewChild('dialogRefTwo') dialogRefTwo!: TemplateRef<any>;
   itemForm!: FormGroup;
+  marketForm!: FormGroup;
 
   constructor(
     private dataservice: DataService,
@@ -47,18 +48,30 @@ export class ItemsComponent implements OnInit {
       catID: new FormControl('', [Validators.required]),
       active: new FormControl(true),
     });
+    this.marketForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      active: new FormControl(true),
+    });
   }
 
-  onSubmit(val: any) {
+  onSubmit(val: any, type: string) {
     this.dataservice.setLoader(true);
-
-    this.dataservice
-      .createItems(val.value)
-      .pipe(tap(() => this.dataservice.liveReload.next()))
-      .subscribe((res) => {
-        this.dataservice.setLoader(false);
-      });
-    this.itemForm.reset();
+    if (type === 'market') {
+      this.dataservice
+        .createMarket(val.value)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe(() => {
+          this.dataservice.setLoader(false);
+        });
+    } else {
+      this.dataservice
+        .createItems(val.value)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe(() => {
+          this.dataservice.setLoader(false);
+        });
+      this.itemForm.reset();
+    }
   }
 
   getData() {
@@ -70,53 +83,94 @@ export class ItemsComponent implements OnInit {
         .pipe(map((res: any) => res.Data)),
     });
 
-    newArray.subscribe((res: any) => {
+    newArray.pipe().subscribe((res: any) => {
       this.allItems = res.items;
       this.allMarket = res.market;
       this.allCategory = res.category;
       this.dataservice.setLoader(false);
     });
   }
-  openDialog() {
+  openDialog(value: string) {
     this.itemForm.reset();
+    this.marketForm.reset();
     this.editMode = false;
-    this.dialog.open(this.dialogRef, {});
+
+    if (value === 'dialogOne') {
+      this.itemForm.patchValue({ active: true });
+      this.dialog.open(this.dialogRef, {});
+    } else {
+      this.marketForm.patchValue({ active: true });
+      this.dialog.open(this.dialogRefTwo, {});
+    }
   }
 
-  editData(data: any) {
-    let newData = {
-      name: data.name,
-      catID: data.category._id,
-      active: data.active,
-    };
-    this.itemForm.patchValue(newData);
-    this.editMode = true;
-    this.dialog.open(this.dialogRef, { data: data._id });
+  editData(data: any, type?: string) {
+    if (type === 'market') {
+      let newData = {
+        name: data.name,
+        active: data.active,
+      };
+      this.marketForm.patchValue(newData);
+      this.editMode = true;
+      this.dialog.open(this.dialogRefTwo, { data: data._id });
+    } else {
+      let newData = {
+        name: data.name,
+        catID: data.category._id,
+        active: data.active,
+      };
+      this.itemForm.patchValue(newData);
+      this.editMode = true;
+      this.dialog.open(this.dialogRef, { data: data._id });
+    }
   }
 
-  updateData(itemForm: any, id: string) {
-    let body = {
-      name: itemForm.name,
-      category: itemForm.catID,
-      active: itemForm.active,
-    };
+  updateData(formValue: any, id: string, type?: string) {
     this.dataservice.setLoader(true);
-    this.dataservice
-      .updateItemData(id, body)
-      .pipe(tap(() => this.dataservice.liveReload.next()))
-      .subscribe(() => {
-        this.dataservice.setLoader(false);
-      });
+
+    if (type === 'market') {
+      let body = {
+        name: formValue.name,
+        active: formValue.active,
+      };
+      this.dataservice
+        .updateMarket(id, body)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe(() => {
+          this.dataservice.setLoader(false);
+        });
+    } else {
+      let body = {
+        name: formValue.name,
+        category: formValue.catID,
+        active: formValue.active,
+      };
+      this.dataservice
+        .updateItemData(id, body)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe(() => {
+          this.dataservice.setLoader(false);
+        });
+    }
   }
 
-  deleteData(id: string) {
+  deleteData(id: string, type?: string) {
     this.dataservice.setLoader(true);
-    this.dataservice
-      .deleteItem(id)
-      .pipe(tap(() => this.dataservice.liveReload.next()))
-      .subscribe((res) => {
-        this.dataservice.setLoader(false);
-      });
+    if (type === 'market') {
+      this.dataservice
+        .deleteMarket(id)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe((res) => {
+          this.dataservice.setLoader(false);
+        });
+    } else {
+      this.dataservice
+        .deleteItem(id)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe((res) => {
+          this.dataservice.setLoader(false);
+        });
+    }
   }
 }
 

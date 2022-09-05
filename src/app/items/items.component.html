@@ -3,7 +3,7 @@
     <mat-card class="card">
       <div class="flex justify-content-between align-center">
         <div>Add Items</div>
-        <button mat-button color="primary" (click)="openDialog()">
+        <button mat-button color="primary" (click)="openDialog('dialogOne')">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -44,11 +44,15 @@
                 <button
                   mat-button
                   color="warn"
-                  (click)="deleteData(element._id)"
+                  (click)="deleteData(element._id, 'item')"
                 >
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-button color="primary" (click)="editData(element)">
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="editData(element, 'item')"
+                >
                   <mat-icon>edit</mat-icon>
                 </button>
               </mat-cell>
@@ -63,25 +67,19 @@
               *matRowDef="let row; columns: displayedColumnsOne"
             ></mat-row>
           </mat-table>
-
-          <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                         showFirstLastButtons
-                         aria-label="Select page of periodic elements">
-          </mat-paginator> -->
         </div>
       </mat-card-content>
     </mat-card>
     <mat-card class="card">
       <div class="flex justify-content-between align-center">
         <div>Add Market</div>
-        <button mat-button color="primary">
+        <button mat-button color="primary" (click)="openDialog('dialogTwo')">
           <mat-icon>add</mat-icon>
         </button>
       </div>
       <mat-card-content>
         <div class="tableDiv">
           <mat-table mat-table [dataSource]="allMarket">
-            <!-- Position Column -->
             <ng-container matColumnDef="name">
               <mat-header-cell mat-header-cell *matHeaderCellDef
                 >Name.</mat-header-cell
@@ -104,10 +102,18 @@
                 *matCellDef="let element"
                 style="text-align: right"
               >
-                <button mat-button color="warn">
+                <button
+                  mat-button
+                  color="warn"
+                  (click)="deleteData(element._id, 'market')"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-button color="primary">
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="editData(element, 'market')"
+                >
                   <mat-icon>edit</mat-icon>
                 </button>
               </mat-cell>
@@ -122,11 +128,6 @@
               *matRowDef="let row; columns: displayedColumnsTwo"
             ></mat-row>
           </mat-table>
-
-          <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                         showFirstLastButtons
-                         aria-label="Select page of periodic elements">
-          </mat-paginator> -->
         </div>
       </mat-card-content>
     </mat-card>
@@ -135,11 +136,7 @@
 
 <ng-template #dialogRef let-new>
   <h2 class="dialogTitle">Add Item</h2>
-  <form
-    class="example-form"
-    [formGroup]="itemForm"
-    (ngSubmit)="onSubmit(itemForm)"
-  >
+  <form class="example-form" [formGroup]="itemForm">
     <p>
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Item Name</mat-label>
@@ -170,11 +167,11 @@
       </button>
       <button
         *ngIf="!editMode"
-        type="submit"
         [disabled]="!itemForm.valid"
         mat-button
         mat-dialog-close
         color="primary"
+        (click)="onSubmit(itemForm, 'item')"
       >
         Save
       </button>
@@ -184,7 +181,52 @@
         mat-button
         mat-dialog-close
         color="primary"
-        (click)="updateData(itemForm.value, new)"
+        (click)="updateData(itemForm.value, new, 'item')"
+      >
+        Update
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #dialogRefTwo let-new>
+  <h2 class="dialogTitle">Add Supermarket</h2>
+  <form class="example-form" [formGroup]="marketForm">
+    <p>
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Supermarket Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="!marketForm.valid && marketForm.value.name === ''">
+          Please enter a Valid Item Name
+        </mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-checkbox formControlName="active" class="example-margin"
+        >Active</mat-checkbox
+      >
+    </p>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close color="warn" type="reset">
+        Cancel
+      </button>
+      <button
+        *ngIf="!editMode"
+        [disabled]="!marketForm.valid"
+        mat-button
+        mat-dialog-close
+        color="primary"
+        (click)="onSubmit(marketForm, 'market')"
+      >
+        Save
+      </button>
+      <button
+        *ngIf="editMode"
+        [disabled]="!marketForm.valid"
+        mat-button
+        mat-dialog-close
+        color="primary"
+        (click)="updateData(marketForm.value, new, 'market')"
       >
         Update
       </button>

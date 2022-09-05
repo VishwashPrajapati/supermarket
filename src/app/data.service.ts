@@ -8,13 +8,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class DataService {
   loading = new BehaviorSubject(false);
 
-  headers = {
-    'content-type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
-    'Access-Control-Allow-Headers':
-      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-  };
 
   liveReload = new Subject<void>();
 
@@ -51,12 +44,25 @@ export class DataService {
   }
 
   // Supermarket Service
+
+  createMarket(body: any) {
+    return this.http.post(`${this.baseURL}/supermarket`, body);
+  }
+
   getAllMarket() {
     return this.http.get(`${this.baseURL}/supermarket`);
   }
 
   getSuperMarket(id: string) {
     return this.http.get(`${this.baseURL}/supermarket/${id}`);
+  }
+
+  deleteMarket(id: string) {
+    return this.http.delete(`${this.baseURL}/supermarket/${id}`);
+  }
+
+  updateMarket(id: string, body: any) {
+    return this.http.patch(`${this.baseURL}/supermarket/${id}`, body);
   }
 
   // Category Service

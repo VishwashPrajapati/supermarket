@@ -22,6 +22,12 @@ const routes: Routes = [
     path: 'home',
     component: DashboardComponent,
   },
+  {
+    path: '',
+    redirectTo: "items",
+    pathMatch:"full"
+  },
+
 ];
 
 @NgModule({
