@@ -22,10 +22,10 @@ export class NavbarComponent {
       name: 'Compare',
       link: 'compare',
     },
-    {
-      name: 'Category',
-      link: 'category',
-    },
+    // {
+    //   name: 'Category',
+    //   link: 'category',
+    // },
   ];
 
   isHandset$: Observable<boolean> = this.breakpointObserver

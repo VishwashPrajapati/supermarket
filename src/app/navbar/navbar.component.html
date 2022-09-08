@@ -7,7 +7,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Market Compare</mat-toolbar>
+    <mat-toolbar routerLink="items">Market Compare</mat-toolbar>
     <mat-nav-list>
       <a
         (click)="drawer.close()"
@@ -22,8 +22,8 @@
   <mat-sidenav-content>
     <mat-toolbar>
       <div class="flex">
-        <div>
-          <span routerLink="home">Market Compare</span>
+        <div style="cursor: pointer;" class="flex justify-content-center align-center">
+          <span routerLink="items">Market Compare</span>
         </div>
         <div>
           <button
