@@ -14,6 +14,9 @@ mat-footer-cell:first-of-type {
 }
 
 @media (max-width: 600px) {
+  .mat-row, mat-footer-row{
+    min-height: 32px;
+  }
   .mat-cell:first-of-type,
   mat-header-cell:first-of-type,
   mat-footer-cell:first-of-type {
