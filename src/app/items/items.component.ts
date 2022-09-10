@@ -75,20 +75,17 @@ export class ItemsComponent implements OnInit {
   }
 
   getData() {
-    const newArray = forkJoin({
-      items: this.dataservice.getAllItems().pipe(map((res: any) => res.Data)),
-      market: this.dataservice.getAllMarket().pipe(map((res: any) => res.Data)),
-      category: this.dataservice
-        .getAllCategory()
-        .pipe(map((res: any) => res.Data)),
-    });
+    this.dataservice.getItems().subscribe((res:any) => {
+      this.allItems = res;
+    })
+    this.dataservice.getCategory().subscribe((res:any) => {
+      this.allCategory = res;
+    })
+    this.dataservice.getMarket().subscribe((res:any) => {
+      this.allMarket = res;
+    })
+    this.dataservice.setLoader(false);
 
-    newArray.pipe().subscribe((res: any) => {
-      this.allItems = res.items;
-      this.allMarket = res.market;
-      this.allCategory = res.category;
-      this.dataservice.setLoader(false);
-    });
   }
   openDialog(value: string) {
     this.itemForm.reset();

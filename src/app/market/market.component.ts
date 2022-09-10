@@ -12,9 +12,10 @@ export class MarketComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataservice.setLoader(true);
-    this.dataservice.getAllMarket().subscribe((e: any) => {
+    this.dataservice.getMarket().subscribe((e:any) => {
       this.dataservice.setLoader(false);
-      this.allMarket = e.Data;
-    });
+      this.allMarket = e;
+    })
+    
   }
 }

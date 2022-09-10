@@ -32,8 +32,7 @@ export class CompareComponent implements OnInit {
   constructor(private dataservice: DataService) {
     this.dataservice.setLoader(true);
     this.dataservice
-      .getAllMarket()
-      .pipe(map((e: any) => e.Data))
+      .getMarket()
       .subscribe((res: any) => {
         res.forEach((ele: any) => {
           this.displayedColumns.push(ele.name);

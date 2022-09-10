@@ -8,12 +8,26 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class DataService {
   loading = new BehaviorSubject(false);
 
+  MARKETS = new BehaviorSubject('')
+  ITEMS = new BehaviorSubject('')
+  CATEGORY = new BehaviorSubject('')
+
 
   liveReload = new Subject<void>();
 
   baseURL = 'https://marketcompare.herokuapp.com';
 
   constructor(private http: HttpClient) {}
+
+  getMarket(){
+    return this.MARKETS.asObservable()   
+  }
+  getItems(){
+    return this.ITEMS.asObservable()  
+  }
+  getCategory(){
+    return this.CATEGORY.asObservable()  
+  }
 
   getLoader() {
     return this.loading.asObservable();
