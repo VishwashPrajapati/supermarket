@@ -83,4 +83,20 @@ export class DataService {
   getAllCategory() {
     return this.http.get(`${this.baseURL}/category`);
   }
+
+  createCategory(body: any) {
+    return this.http.post(`${this.baseURL}/category`, body);
+  }
+
+  getSingleCategory(id: string) {
+    return this.http.get(`${this.baseURL}/category/${id}`);
+  }
+
+  deleteCategory(id: string) {
+    return this.http.delete(`${this.baseURL}/category/${id}`);
+  }
+
+  updateCategory(id: string, body: any) {
+    return this.http.patch(`${this.baseURL}/category/${id}`, body);
+  }
 }
