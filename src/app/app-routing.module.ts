@@ -9,6 +9,11 @@ const routes: Routes = [
       import('./items/items.module').then((m) => m.ItemsModule),
   },
   {
+    path: 'items-edit',
+    loadChildren: () =>
+      import('./items/items.module').then((m) => m.ItemsModule),
+  },
+  {
     path: 'market',
     loadChildren: () =>
       import('./market/market.module').then((m) => m.MarketModule),

@@ -1,136 +1,236 @@
 <div class="container itemPage">
   <div class="row">
-    <mat-card class="card">
-      <div class="flex justify-content-between align-center">
-        <div>Add Items</div>
-        <button mat-button color="primary" (click)="openDialog('dialogOne')">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
-      <mat-card-content>
-        <div class="tableDiv">
-          <mat-table mat-table [dataSource]="allItems">
-            <!-- Position Column -->
-            <ng-container matColumnDef="name">
-              <mat-header-cell mat-header-cell *matHeaderCellDef
-                >Name.</mat-header-cell
-              >
-              <mat-cell mat-cell *matCellDef="let element">{{
-                element.name
-              }}</mat-cell>
-            </ng-container>
+   
+    <mat-accordion class="example-headers-align" class="card">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Items
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <mat-card> -->
+          <div class="flex justify-content-between align-center">
+            <div></div>
+            <button mat-button color="primary" (click)="openDialog('dialogOne')">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <!-- <mat-card-content> -->
+            <div class="tableDiv">
+              <mat-table mat-table [dataSource]="allItems">
+                <!-- Position Column -->
+                <ng-container matColumnDef="name">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef
+                    >Name.</mat-header-cell
+                  >
+                  <mat-cell mat-cell *matCellDef="let element">{{
+                    element.name
+                  }}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="category">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef
+                    >Category.</mat-header-cell
+                  >
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{ element.category.name }}
+                  </mat-cell>
+                </ng-container>
+                  <ng-container  matColumnDef="action" >
+                    <mat-header-cell
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="headerCell"
+                    
+                  >
+                    <span>Action</span>
+                  </mat-header-cell>
+                  <mat-cell
+                    mat-cell
+                    *matCellDef="let element"
+                    class="headerCell"
+                  >
+                    <button
+                      mat-button
+                      color="warn"
+                      *ngIf="this.editDataMode"
+                      (click)="deleteData(element._id, 'item')"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button
+                      mat-button
+                      color="primary"
+                      *ngIf="this.editDataMode"
+                      (click)="editData(element, 'item')"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row
+                  mat-header-row
+                  *matHeaderRowDef="displayedColumnsOne"
+                ></mat-header-row>
+                <mat-row
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumnsOne"
+                ></mat-row>
+              </mat-table>
+            </div>
+          <!-- </mat-card-content> -->
+        <!-- </mat-card> -->
+      </mat-expansion-panel>
+    </mat-accordion>
 
-            <ng-container matColumnDef="category">
-              <mat-header-cell mat-header-cell *matHeaderCellDef
-                >Category.</mat-header-cell
-              >
-              <mat-cell mat-cell *matCellDef="let element">
-                {{ element.category.name }}
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="action">
-              <mat-header-cell
-                mat-header-cell
-                *matHeaderCellDef
-                class="headerCell"
-              >
-                Action
-              </mat-header-cell>
-              <mat-cell
-                mat-cell
-                *matCellDef="let element"
-                class="headerCell"
-              >
-                <button
-                  mat-button
-                  color="warn"
-                  (click)="deleteData(element._id, 'item')"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button
-                  mat-button
-                  color="primary"
-                  (click)="editData(element, 'item')"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
+    <mat-accordion class="example-headers-align" class="card">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Market
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <mat-card > -->
+          <div class="flex justify-content-between align-center">
+            <div></div>
+            <button  mat-button color="primary" (click)="openDialog('dialogTwo')">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <!-- <mat-card-content> -->
+            <div class="tableDiv">
+              <mat-table mat-table [dataSource]="allMarket">
+                <ng-container matColumnDef="name">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef
+                    >Name.</mat-header-cell
+                  >
+                  <mat-cell mat-cell *matCellDef="let element">{{
+                    element.name
+                  }}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="action">
+                  <mat-header-cell
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="headerCell"
+                  >
+                    Action
+                  </mat-header-cell>
+                  <mat-cell
+                    mat-cell
+                    *matCellDef="let element"
+                    class="headerCell"
+                  >
+                    <button
+                    *ngIf="this.editDataMode"
+                      mat-button
+                      color="warn"
+                      (click)="deleteData(element._id, 'market')"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button
+                    *ngIf="this.editDataMode"
+                      mat-button
+                      color="primary"
+                      (click)="editData(element, 'market')"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+    
+                <mat-header-row
+                  mat-header-row
+                  *matHeaderRowDef="displayedColumnsTwo"
+                ></mat-header-row>
+                <mat-row
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumnsTwo"
+                ></mat-row>
+              </mat-table>
+            </div>
+          <!-- </mat-card-content> -->
+        <!-- </mat-card> -->
+      </mat-expansion-panel>
+    </mat-accordion>
 
-            <mat-header-row
-              mat-header-row
-              *matHeaderRowDef="displayedColumnsOne"
-            ></mat-header-row>
-            <mat-row
-              mat-row
-              *matRowDef="let row; columns: displayedColumnsOne"
-            ></mat-row>
-          </mat-table>
-        </div>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="card">
-      <div class="flex justify-content-between align-center">
-        <div>Add Market</div>
-        <button mat-button color="primary" (click)="openDialog('dialogTwo')">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
-      <mat-card-content>
-        <div class="tableDiv">
-          <mat-table mat-table [dataSource]="allMarket">
-            <ng-container matColumnDef="name">
-              <mat-header-cell mat-header-cell *matHeaderCellDef
-                >Name.</mat-header-cell
-              >
-              <mat-cell mat-cell *matCellDef="let element">{{
-                element.name
-              }}</mat-cell>
-            </ng-container>
+    <mat-accordion class="example-headers-align" class="card">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Category
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <mat-card> -->
+          <div class="flex justify-content-between align-center">
+            <div></div>
+            <button  mat-button color="primary" (click)="openDialog('dialogRefThree')">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <!-- <mat-card-content> -->
+            <div class="tableDiv">
+              <mat-table mat-table [dataSource]="allCategory">
+                <ng-container matColumnDef="name">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef
+                    >Name.</mat-header-cell
+                  >
+                  <mat-cell mat-cell *matCellDef="let element">{{
+                    element.name
+                  }}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="action">
+                  <mat-header-cell
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="headerCell"
+                  >
+                    Action
+                  </mat-header-cell>
+                  <mat-cell
+                    mat-cell
+                    *matCellDef="let element"
+                    class="headerCell"
+                  >
+                    <button
+                    *ngIf="this.editDataMode"
+                      mat-button
+                      color="warn"
+                      (click)="deleteData(element._id, 'category')"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button
+                    *ngIf="this.editDataMode"
+                      mat-button
+                      color="primary"
+                      (click)="editData(element, 'category')"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+    
+                <mat-header-row
+                  mat-header-row
+                  *matHeaderRowDef="displayedColumnsTwo"
+                ></mat-header-row>
+                <mat-row
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumnsTwo"
+                ></mat-row>
+              </mat-table>
+            </div>
+          <!-- </mat-card-content> -->
+        <!-- </mat-card> -->
+      </mat-expansion-panel>
+    </mat-accordion>
 
-            <ng-container matColumnDef="action">
-              <mat-header-cell
-                mat-header-cell
-                *matHeaderCellDef
-                class="headerCell"
-              >
-                Action
-              </mat-header-cell>
-              <mat-cell
-                mat-cell
-                *matCellDef="let element"
-                class="headerCell"
-              >
-                <button
-                  mat-button
-                  color="warn"
-                  (click)="deleteData(element._id, 'market')"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button
-                  mat-button
-                  color="primary"
-                  (click)="editData(element, 'market')"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
 
-            <mat-header-row
-              mat-header-row
-              *matHeaderRowDef="displayedColumnsTwo"
-            ></mat-header-row>
-            <mat-row
-              mat-row
-              *matRowDef="let row; columns: displayedColumnsTwo"
-            ></mat-row>
-          </mat-table>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    
   </div>
 </div>
 
@@ -227,6 +327,51 @@
         mat-dialog-close
         color="primary"
         (click)="updateData(marketForm.value, new, 'market')"
+      >
+        Update
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #dialogRefThree let-new>
+  <h2 class="dialogTitle">Add Category</h2>
+  <form class="example-form" [formGroup]="categoryForm">
+    <p>
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Category Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="!categoryForm.valid && categoryForm.value.name === ''">
+          Please enter a Valid Category Name
+        </mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-checkbox formControlName="active" class="example-margin"
+        >Active</mat-checkbox
+      >
+    </p>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close color="warn" type="reset">
+        Cancel
+      </button>
+      <button
+        *ngIf="!editMode"
+        [disabled]="!categoryForm.valid"
+        mat-button
+        mat-dialog-close
+        color="primary"
+        (click)="onSubmit(categoryForm, 'category')"
+      >
+        Save
+      </button>
+      <button
+        *ngIf="editMode"
+        [disabled]="!categoryForm.valid"
+        mat-button
+        mat-dialog-close
+        color="primary"
+        (click)="updateData(categoryForm.value, new, 'category')"
       >
         Update
       </button>

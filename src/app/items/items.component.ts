@@ -9,6 +9,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-items',
@@ -17,24 +19,41 @@ import {
 })
 export class ItemsComponent implements OnInit {
   allItems = new MatTableDataSource<Items>();
-  displayedColumnsOne: string[] = ['name', 'category', 'action'];
+  displayedColumnsOne: string[] = ['name', 'category'];
+  displayedColumnsTwo: string[] = ['name'];
   allMarket = new MatTableDataSource<Supermarket>();
-  displayedColumnsTwo: string[] = ['name', 'action'];
 
   editMode: boolean = false;
 
   allCategory: any = [];
 
+  editDataMode = false;
+
   @ViewChild('dialogRef') dialogRef!: TemplateRef<any>;
   @ViewChild('dialogRefTwo') dialogRefTwo!: TemplateRef<any>;
+  @ViewChild('dialogRefThree') dialogRefThree!: TemplateRef<any>;
   itemForm!: FormGroup;
   marketForm!: FormGroup;
+  categoryForm!: FormGroup;
 
   constructor(
     private dataservice: DataService,
     private dialog: MatDialog,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private location: Location
+    ) {
+      const url = this.location.path()
+      if(url.includes("edit")){
+        this.displayedColumnsOne.push('action')
+        this.displayedColumnsTwo.push('action')
+        this.editDataMode = true;
+      } else {
+        this.editDataMode = false;
+      }
+
+      
+    
+  }
 
   ngOnInit(): void {
     this.dataservice.setLoader(true);
@@ -52,6 +71,10 @@ export class ItemsComponent implements OnInit {
       name: new FormControl('', [Validators.required]),
       active: new FormControl(true),
     });
+    this.categoryForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      active: new FormControl(true),
+    });
   }
 
   onSubmit(val: any, type: string) {
@@ -63,7 +86,7 @@ export class ItemsComponent implements OnInit {
         .subscribe(() => {
           this.dataservice.setLoader(false);
         });
-    } else {
+    } else if(type === 'items') {
       this.dataservice
         .createItems(val.value)
         .pipe(tap(() => this.dataservice.liveReload.next()))
@@ -71,6 +94,14 @@ export class ItemsComponent implements OnInit {
           this.dataservice.setLoader(false);
         });
       this.itemForm.reset();
+    } else {
+      this.dataservice
+      .createCategory(val.value)
+      .pipe(tap(() => this.dataservice.liveReload.next()))
+      .subscribe(() => {
+        this.dataservice.setLoader(false);
+      });
+    this.categoryForm.reset(); 
     }
   }
 
@@ -90,14 +121,18 @@ export class ItemsComponent implements OnInit {
   openDialog(value: string) {
     this.itemForm.reset();
     this.marketForm.reset();
+    this.categoryForm.reset();
     this.editMode = false;
 
     if (value === 'dialogOne') {
       this.itemForm.patchValue({ active: true });
       this.dialog.open(this.dialogRef, {});
-    } else {
+    } else if(value === 'dialogTwo') {
       this.marketForm.patchValue({ active: true });
       this.dialog.open(this.dialogRefTwo, {});
+    } else {
+      this.categoryForm.patchValue({ active: true });
+      this.dialog.open(this.dialogRefThree, {});
     }
   }
 
@@ -110,7 +145,7 @@ export class ItemsComponent implements OnInit {
       this.marketForm.patchValue(newData);
       this.editMode = true;
       this.dialog.open(this.dialogRefTwo, { data: data._id });
-    } else {
+    } else if(type === 'items') {
       let newData = {
         name: data.name,
         catID: data.category._id,
@@ -119,6 +154,14 @@ export class ItemsComponent implements OnInit {
       this.itemForm.patchValue(newData);
       this.editMode = true;
       this.dialog.open(this.dialogRef, { data: data._id });
+    } else {
+      let newData = {
+        name: data.name,
+        active: data.active,
+      };
+      this.categoryForm.patchValue(newData);
+      this.editMode = true;
+      this.dialog.open(this.dialogRefThree, { data: data._id });
     }
   }
 
@@ -136,7 +179,7 @@ export class ItemsComponent implements OnInit {
         .subscribe(() => {
           this.dataservice.setLoader(false);
         });
-    } else {
+    } else if (type === 'items') {
       let body = {
         name: formValue.name,
         category: formValue.catID,
@@ -144,6 +187,17 @@ export class ItemsComponent implements OnInit {
       };
       this.dataservice
         .updateItemData(id, body)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe(() => {
+          this.dataservice.setLoader(false);
+        });
+    } else {
+      let body = {
+        name: formValue.name,
+        active: formValue.active,
+      };
+      this.dataservice
+        .updateCategory(id, body)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe(() => {
           this.dataservice.setLoader(false);
@@ -160,9 +214,16 @@ export class ItemsComponent implements OnInit {
         .subscribe((res) => {
           this.dataservice.setLoader(false);
         });
-    } else {
+    } else if (type === 'items') {
       this.dataservice
         .deleteItem(id)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe((res) => {
+          this.dataservice.setLoader(false);
+        });
+    } else {
+      this.dataservice
+        .deleteCategory(id)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe((res) => {
           this.dataservice.setLoader(false);
