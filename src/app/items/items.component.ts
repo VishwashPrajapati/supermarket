@@ -41,22 +41,18 @@ export class ItemsComponent implements OnInit {
     private dialog: MatDialog,
     private fb: FormBuilder,
     private location: Location
-    ) {
-      const url = this.location.path()
-      if(url.includes("edit")){
-        this.displayedColumnsOne.push('action')
-        this.displayedColumnsTwo.push('action')
-        this.editDataMode = true;
-      } else {
-        this.editDataMode = false;
-      }
-
-      
-    
+  ) {
+    const url = this.location.path();
+    if (url.includes('edit')) {
+      this.displayedColumnsOne.push('action');
+      this.displayedColumnsTwo.push('action');
+      this.editDataMode = true;
+    } else {
+      this.editDataMode = false;
+    }
   }
 
   ngOnInit(): void {
-    this.dataservice.setLoader(true);
     this.getData();
     this.dataservice.liveReload.subscribe((e) => {
       this.getData();
@@ -78,45 +74,43 @@ export class ItemsComponent implements OnInit {
   }
 
   onSubmit(val: any, type: string) {
-    this.dataservice.setLoader(true);
     if (type === 'market') {
       this.dataservice
         .createMarket(val.value)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe(() => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
-    } else if(type === 'items') {
+    } else if (type === 'items') {
       this.dataservice
         .createItems(val.value)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe(() => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
       this.itemForm.reset();
     } else {
       this.dataservice
-      .createCategory(val.value)
-      .pipe(tap(() => this.dataservice.liveReload.next()))
-      .subscribe(() => {
-        this.dataservice.setLoader(false);
-      });
-    this.categoryForm.reset(); 
+        .createCategory(val.value)
+        .pipe(tap(() => this.dataservice.liveReload.next()))
+        .subscribe(() => {
+          // this.dataservice.setLoader(false);
+        });
+      this.categoryForm.reset();
     }
   }
 
   getData() {
-    this.dataservice.getItems().subscribe((res:any) => {
+    this.dataservice.getItems().subscribe((res: any) => {
       this.allItems = res;
-    })
-    this.dataservice.getCategory().subscribe((res:any) => {
+    });
+    this.dataservice.getCategory().subscribe((res: any) => {
       this.allCategory = res;
-    })
-    this.dataservice.getMarket().subscribe((res:any) => {
+    });
+    this.dataservice.getMarket().subscribe((res: any) => {
       this.allMarket = res;
-    })
-    this.dataservice.setLoader(false);
-
+    });
+    // this.dataservice.setLoader(false);
   }
   openDialog(value: string) {
     this.itemForm.reset();
@@ -127,7 +121,7 @@ export class ItemsComponent implements OnInit {
     if (value === 'dialogOne') {
       this.itemForm.patchValue({ active: true });
       this.dialog.open(this.dialogRef, {});
-    } else if(value === 'dialogTwo') {
+    } else if (value === 'dialogTwo') {
       this.marketForm.patchValue({ active: true });
       this.dialog.open(this.dialogRefTwo, {});
     } else {
@@ -145,7 +139,7 @@ export class ItemsComponent implements OnInit {
       this.marketForm.patchValue(newData);
       this.editMode = true;
       this.dialog.open(this.dialogRefTwo, { data: data._id });
-    } else if(type === 'items') {
+    } else if (type === 'items') {
       let newData = {
         name: data.name,
         catID: data.category._id,
@@ -166,8 +160,6 @@ export class ItemsComponent implements OnInit {
   }
 
   updateData(formValue: any, id: string, type?: string) {
-    this.dataservice.setLoader(true);
-
     if (type === 'market') {
       let body = {
         name: formValue.name,
@@ -177,7 +169,7 @@ export class ItemsComponent implements OnInit {
         .updateMarket(id, body)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe(() => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
     } else if (type === 'items') {
       let body = {
@@ -189,7 +181,7 @@ export class ItemsComponent implements OnInit {
         .updateItemData(id, body)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe(() => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
     } else {
       let body = {
@@ -199,34 +191,31 @@ export class ItemsComponent implements OnInit {
       this.dataservice
         .updateCategory(id, body)
         .pipe(tap(() => this.dataservice.liveReload.next()))
-        .subscribe(() => {
-          this.dataservice.setLoader(false);
-        });
+        .subscribe(() => {});
     }
   }
 
   deleteData(id: string, type?: string) {
-    this.dataservice.setLoader(true);
     if (type === 'market') {
       this.dataservice
         .deleteMarket(id)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe((res) => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
     } else if (type === 'items') {
       this.dataservice
         .deleteItem(id)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe((res) => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
     } else {
       this.dataservice
         .deleteCategory(id)
         .pipe(tap(() => this.dataservice.liveReload.next()))
         .subscribe((res) => {
-          this.dataservice.setLoader(false);
+          // this.dataservice.setLoader(false);
         });
     }
   }

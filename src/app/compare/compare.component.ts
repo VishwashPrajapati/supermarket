@@ -30,49 +30,44 @@ export class CompareComponent implements OnInit {
   newData: any = [];
   compare: any = [];
   constructor(private dataservice: DataService) {
-    this.dataservice.setLoader(true);
-    this.dataservice
-      .getMarket()
-      .subscribe((res: any) => {
-        res.forEach((ele: any) => {
-          this.displayedColumns.push(ele.name);
-          ele.items.forEach((e: any, index: any) => {
-            const ids = this.newData.findIndex(
-              (newname: any) => newname.name === e.name
-            );
-            if (ids === -1) {
-              this.newData.push({
-                name: e.name,
-                compare: [{ name: ele.name, price: e.price }],
-              });
-            } else {
-              this.newData[index].compare.push({
-                name: ele.name,
-                price: e.price,
-              });
-            }
-          });
+    this.dataservice.getMarket().subscribe((res: any) => {
+      res.forEach((ele: any) => {
+        this.displayedColumns.push(ele.name);
+        ele.items.forEach((e: any, index: any) => {
+          const ids = this.newData.findIndex(
+            (newname: any) => newname.name === e.name
+          );
+          if (ids === -1) {
+            this.newData.push({
+              name: e.name,
+              compare: [{ name: ele.name, price: e.price }],
+            });
+          } else {
+            this.newData[index].compare.push({
+              name: ele.name,
+              price: e.price,
+            });
+          }
         });
-        this.dataSource = new MatTableDataSource(this.newData);
-
-        this.dataSource.filterPredicate = (data: any, filter: string) => {
-          const accumulator = (e: any) => {
-            return data.name;
-          };
-          const dataStr = Object.keys(data)
-            .reduce(accumulator, '')
-            .toLowerCase();
-
-          // Transform the filter by converting it to lowercase and removing whitespace.
-          const transformedFilter = filter.trim().toLowerCase();
-          return dataStr.indexOf(transformedFilter) !== -1;
-        };
-        setTimeout(() => {
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.dataservice.setLoader(false);
-        }, 100);
       });
+      this.dataSource = new MatTableDataSource(this.newData);
+
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        const accumulator = (e: any) => {
+          return data.name;
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        // this.dataservice.setLoader(false);
+      }, 100);
+    });
   }
 
   ngOnInit(): void {}
@@ -87,15 +82,12 @@ export class CompareComponent implements OnInit {
   }
 
   updateItem(itemid: string) {
-    this.dataservice.setLoader(true);
     this.dataservice
       .updateItem(itemid, {
         s_id: this.marketId,
         price: this.price.nativeElement.value,
       })
       .pipe(tap(() => this.dataservice.liveReload.next()))
-      .subscribe((res) => {
-        this.dataservice.setLoader(false);
-      });
+      .subscribe();
   }
 }

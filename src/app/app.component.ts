@@ -17,14 +17,13 @@ export class AppComponent {
         this.loader = value;
       }, 0);
     });
-    this.getData()
+    this.getData();
     this.dataservice.liveReload.subscribe((e) => {
-      this.getData()
-    })
+      this.getData();
+    });
   }
 
-  getData(){
-    this.dataservice.setLoader(true)
+  getData() {
     const newArray = forkJoin({
       items: this.dataservice.getAllItems().pipe(map((res: any) => res.Data)),
       market: this.dataservice.getAllMarket().pipe(map((res: any) => res.Data)),
@@ -34,10 +33,9 @@ export class AppComponent {
     });
 
     newArray.subscribe((res: any) => {
-      this.dataservice.setLoader(false)
-      this.dataservice.ITEMS.next(res.items)
-      this.dataservice.CATEGORY.next(res.category)
-      this.dataservice.MARKETS.next(res.market)
+      this.dataservice.ITEMS.next(res.items);
+      this.dataservice.CATEGORY.next(res.category);
+      this.dataservice.MARKETS.next(res.market);
     });
   }
 }

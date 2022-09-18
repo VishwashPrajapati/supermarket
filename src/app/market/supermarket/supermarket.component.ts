@@ -31,7 +31,6 @@ export class SupermarketComponent implements OnInit {
     private dataservice: DataService,
     private activeRoute: ActivatedRoute
   ) {
-    this.dataservice.setLoader(true);
     this.activeRoute.paramMap.subscribe((res: any) => {
       this.dataservice.getSuperMarket(res.params.id).subscribe((res: any) => {
         this.marketName = res.Data.name;
@@ -53,7 +52,7 @@ export class SupermarketComponent implements OnInit {
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.dataservice.setLoader(false);
+        // this.dataservice.setLoader(false);
       });
     });
   }
@@ -70,15 +69,12 @@ export class SupermarketComponent implements OnInit {
   }
 
   updateItem(itemid: string, event: any) {
-    this.dataservice.setLoader(true);
     this.dataservice
       .updateItem(itemid, {
         s_id: this.marketId,
         price: event.target.value,
       })
       .pipe(tap(() => this.dataservice.liveReload.next()))
-      .subscribe((res) => {
-        this.dataservice.setLoader(false);
-      });
+      .subscribe();
   }
 }

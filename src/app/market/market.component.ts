@@ -11,11 +11,8 @@ export class MarketComponent implements OnInit {
   constructor(private dataservice: DataService) {}
 
   ngOnInit(): void {
-    this.dataservice.setLoader(true);
-    this.dataservice.getMarket().subscribe((e:any) => {
-      this.dataservice.setLoader(false);
+    this.dataservice.getMarket().subscribe((e: any) => {
       this.allMarket = e;
-    })
-    
+    });
   }
 }
