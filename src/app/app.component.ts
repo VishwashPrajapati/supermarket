@@ -33,6 +33,7 @@ export class AppComponent {
     });
 
     newArray.subscribe((res: any) => {
+      console.log(res);
       this.dataservice.ITEMS.next(res.items);
       this.dataservice.CATEGORY.next(res.category);
       this.dataservice.MARKETS.next(res.market);
